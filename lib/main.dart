@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<Album> fetchAlbum() async {
+  final String keyVar = DotEnv().env['MOVIE_KEY'];
   final response =
-      await http.get('https://jsonplaceholder.typicode.com/albums/1');
+      await http.get("https://api.themoviedb.org/3/movie/551?api_key=$keyVar");
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -20,22 +22,22 @@ Future<Album> fetchAlbum() async {
 }
 
 class Album {
-  final int userId;
-  final int id;
   final String title;
 
-  Album({this.userId, this.id, this.title});
+  Album({this.title});
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
+      title: json['original_title'],
     );
   }
 }
 
-void main() => runApp(MyApp());
+Future main() async {
+  await DotEnv().load('.env');
+  runApp(MyApp());
+}
+// runApp(MyApp());
 
 class MyApp extends StatefulWidget {
   MyApp({Key key}) : super(key: key);
