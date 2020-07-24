@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'components/trending_movies.dart';
+
 Future<Album> fetchAlbum() async {
   final String keyVar = DotEnv().env['MOVIE_KEY'];
   final response =
@@ -59,24 +61,33 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fetch Data Example',
-      theme: ThemeData(brightness: Brightness.dark),
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Fetch Data Example'),
-        ),
-        body: Center(
-          child: FutureBuilder<Album>(
-            future: futureAlbum,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Text(snapshot.data.title);
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return CircularProgressIndicator();
-            },
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Text(
+                'Trending Movies',
+                style: TextStyle(fontSize: 18.0),
+              ),
+              Container(
+                child: TrendingMovies(),
+              ),
+              Container(
+                child: FutureBuilder<Album>(
+                  future: futureAlbum,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(snapshot.data.title);
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    // By default, show a loading spinner.
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
