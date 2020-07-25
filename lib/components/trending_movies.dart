@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../models/trending.dart';
+import '../pages/detail.dart';
 
 Future<Trending> fetchMovies() async {
   final String keyVar = DotEnv().env['MOVIE_KEY'];
@@ -44,9 +45,25 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                 return Container(
                   // width: MediaQuery.of(context).size.width * 0.6,
                   child: Card(
-                    child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/loading.gif',
-                        image: 'http://image.tmdb.org/t/p/w780/$posterPath'),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) {
+                              return Detail(snapshot.data.movies[index]);
+                            },
+                          ),
+                        );
+                      },
+                      child: Hero(
+                        tag: '$posterPath',
+                        child: FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/loading.gif',
+                            image:
+                                'http://image.tmdb.org/t/p/w780/$posterPath'),
+                      ),
+                    ),
                   ),
                 );
               },
