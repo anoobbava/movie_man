@@ -56,13 +56,9 @@ class _TrendingMoviesState extends State<TrendingMovies> {
                           ),
                         );
                       },
-                      child: Hero(
-                        tag: '$posterPath',
-                        child: FadeInImage.assetNetwork(
-                            placeholder: 'assets/images/loading.gif',
-                            image:
-                                'http://image.tmdb.org/t/p/w780/$posterPath'),
-                      ),
+                      child: FadeInImage.assetNetwork(
+                          placeholder: 'assets/images/loading.gif',
+                          image: 'http://image.tmdb.org/t/p/w780/$posterPath'),
                     ),
                   ),
                 );
