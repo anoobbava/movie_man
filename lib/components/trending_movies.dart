@@ -1,27 +1,59 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-class TrendingMovies extends StatelessWidget {
-  final List<int> numbers = [1, 2, 3, 5, 8, 13, 21, 34, 55];
+import '../models/trending.dart';
 
+Future<Trending> fetchMovies() async {
+  final String keyVar = DotEnv().env['MOVIE_KEY'];
+  final response = await http
+      .get("https://api.themoviedb.org/3/trending/movie/day?api_key=$keyVar");
+  if (response.statusCode == 200) {
+    return Trending.fromJson(json.decode(response.body));
+  } else {
+    throw Exception('not able to Fetch the trening Movies');
+  }
+}
+
+class TrendingMovies extends StatefulWidget {
+  @override
+  _TrendingMoviesState createState() => _TrendingMoviesState();
+}
+
+class _TrendingMoviesState extends State<TrendingMovies> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.35,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: numbers.length,
-        itemBuilder: (context, index) {
+    return FutureBuilder(
+      future: fetchMovies(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Center(
+            child: Image.asset('assets/images/loading.gif'),
+          );
+        } else {
           return Container(
-            width: MediaQuery.of(context).size.width * 0.6,
-            child: Card(
-              child: FadeInImage.assetNetwork(
-                placeholder: 'assets/images/loading.gif',
-                image: 'https://picsum.photos/250?image=$index',
-              ),
+            height: MediaQuery.of(context).size.height * 0.40,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: snapshot.data.movies.length,
+              itemBuilder: (context, index) {
+                final String posterPath =
+                    snapshot.data.movies[index]['poster_path'];
+                return Container(
+                  // width: MediaQuery.of(context).size.width * 0.6,
+                  child: Card(
+                    child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/loading.gif',
+                        image: 'http://image.tmdb.org/t/p/w780/$posterPath'),
+                  ),
+                );
+              },
             ),
           );
-        },
-      ),
+        }
+      },
     );
   }
 }
