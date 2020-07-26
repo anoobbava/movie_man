@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'components/trending_movies.dart';
 import 'components/top_rated.dart';
+import 'components/upcoming_movies.dart';
 
 Future main() async {
   await DotEnv().load('.env');
@@ -30,6 +31,11 @@ class MyApp extends StatelessWidget {
                   style: TextStyle(fontSize: 18.0),
                 ),
                 TopRated(),
+                Text(
+                  'Upcoming Movies',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                UpcomingMovies(),
               ],
             ),
           ),
