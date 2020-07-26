@@ -1,44 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import 'components/trending_movies.dart';
-import 'components/top_rated.dart';
-import 'components/upcoming_movies.dart';
+import './pages/home_page.dart';
+import './pages/search_movies.dart';
 
 Future main() async {
   await DotEnv().load('.env');
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+  final List<Widget> _childWidgets = [MyHomePage(), SearchMovies()];
+
+  _onItemTapped(int index) {
+    setState(() {
+      this._selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.pink[200]),
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
       home: Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  'Trending Movies',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                TrendingMovies(),
-                Text(
-                  'Top Rated Movies',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                TopRated(),
-                Text(
-                  'Upcoming Movies',
-                  style: TextStyle(fontSize: 18.0),
-                ),
-                UpcomingMovies(),
-              ],
+        body: _childWidgets[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text('Home'),
             ),
-          ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              title: Text('Search'),
+            ),
+          ],
+          selectedItemColor: Colors.pink[200],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
         ),
       ),
     );
