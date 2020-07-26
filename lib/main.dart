@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'components/trending_movies.dart';
+import 'components/top_rated.dart';
 
 Future main() async {
   await DotEnv().load('.env');
@@ -16,16 +17,21 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              Text(
-                'Trending Movies',
-                style: TextStyle(fontSize: 18.0),
-              ),
-              Container(
-                child: TrendingMovies(),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Text(
+                  'Trending Movies',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                TrendingMovies(),
+                Text(
+                  'Top Rated Movies',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+                TopRated(),
+              ],
+            ),
           ),
         ),
       ),
