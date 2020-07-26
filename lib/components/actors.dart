@@ -39,15 +39,16 @@ class _ActorsState extends State<Actors> {
             child: Image.asset('assets/images/loading.gif'),
           );
         } else {
+          final List castData = snapshot.data.cast;
+          castData.removeWhere((item) => item['profile_path'] == null);
           return Container(
             height: MediaQuery.of(context).size.height * 0.3,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data.cast.length,
+              itemCount: castData.length,
               itemBuilder: (context, index) {
-                final String actorImage =
-                    snapshot.data.cast[index]['profile_path'];
-                final String actorName = snapshot.data.cast[index]['name'];
+                final String actorImage = castData[index]['profile_path'];
+                final String actorName = castData[index]['name'];
                 return Container(
                   width: MediaQuery.of(context).size.width * 0.3,
                   child: Card(
