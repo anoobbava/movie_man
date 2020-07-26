@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import '../components/actors.dart';
+import '../components/similar_movies.dart';
 
 class Detail extends StatelessWidget {
   final Map movieData;
@@ -65,8 +66,21 @@ class Detail extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10.0),
-            // Display Cast
+            Text(
+              'Cast',
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
             Actors(movieId),
+            SizedBox(height: 10.0),
+            Text(
+              'Similar movies',
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            SimilarMovies(movieId),
           ],
         ),
       ),
