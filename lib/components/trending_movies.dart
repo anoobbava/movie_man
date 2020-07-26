@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../models/trending.dart';
-import '../pages/detail.dart';
+import './horizontal_cards.dart';
 
 Future<Trending> fetchMovies() async {
   final String keyVar = DotEnv().env['MOVIE_KEY'];
@@ -34,37 +34,7 @@ class _TrendingMoviesState extends State<TrendingMovies> {
             child: Image.asset('assets/images/loading.gif'),
           );
         } else {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.40,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: snapshot.data.movies.length,
-              itemBuilder: (context, index) {
-                final String posterPath =
-                    snapshot.data.movies[index]['poster_path'];
-                return Container(
-                  // width: MediaQuery.of(context).size.width * 0.6,
-                  child: Card(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) {
-                              return Detail(snapshot.data.movies[index]);
-                            },
-                          ),
-                        );
-                      },
-                      child: FadeInImage.assetNetwork(
-                          placeholder: 'assets/images/loading.gif',
-                          image: 'http://image.tmdb.org/t/p/w780/$posterPath'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
+          return HorizontalCards(snapshot.data.movies);
         }
       },
     );
