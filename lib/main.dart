@@ -14,7 +14,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with AutomaticKeepAliveClientMixin {
   int _selectedIndex = 0;
   final List<Widget> _childWidgets = [MyHomePage(), SearchMovies()];
 
@@ -25,7 +25,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
