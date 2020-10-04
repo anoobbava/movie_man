@@ -4,12 +4,7 @@ import '../components/trending_movies.dart';
 import '../components/top_rated.dart';
 import '../components/upcoming_movies.dart';
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
