@@ -42,11 +42,11 @@ class _MyAppState extends State<MyApp> with AutomaticKeepAliveClientMixin {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              title: Text('Home'),
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.search),
-              title: Text('Search'),
+              label: 'Search',
             ),
           ],
           selectedItemColor: Colors.pink[200],
